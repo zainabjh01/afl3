@@ -1,1 +1,100 @@
+% preamble -------------------------------------------------
+\documentclass[a4paper]{article}
+\usepackage[english]{babel}
+\usepackage{microtype,etex,listings,color,xcolor,parskip}
+\usepackage[margin=25mm, bmargin=35mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{BLUE}{rgb}{0.3,0.1,1}
+\definecolor{GREEN}{rgb}{0.1,0.6,0.3}
+\newcommand{\code}[1]{{\color{BLUE}\texttt{#1}}}
+\lstset{
+  language=java,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{BLUE},
+  stringstyle=\color{GREEN},
+  commentstyle=\color[rgb]{0.6,0.6,0.6},
+  identifierstyle=\color[rgb]{0.15,0.15,0.15},
+  columns=fixed,
+  numberstyle=\sffamily\scriptsize,
+  backgroundcolor=\color[rgb]{0.97,0.97,0.97},
+  frame=lines,
+  framexleftmargin=5pt,
+  numbers = left,
+}
+
+\usepackage{subfiles}
+
+\usepackage[T1]{fontenc}
+\usepackage{cuprum}
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\rmfamily\LARGE\bfseries}
+  {\color{GREEN}\thesection.}{1.7em}{}
+
+\titleformat{\subsection}
+  {\rmfamily\Large\bfseries}
+  {}{}{}
+
+\titleformat{\subsubsection}
+  {\rmfamily\large\bfseries}
+  {}{}{}
+
+\usepackage{tikzpagenodes}
+\newcommand{\logo}[1]{%
+\tikz[remember picture,overlay] {%
+  \node[inner sep=0pt,anchor=east] at ([yshift=-5cm]current page text area.north east){#1};}}
+
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{gensymb}
+\usepackage{amssymb}
+\usepackage{algorithm,algpseudocode}
+
+% ... until here -------------------------------------------
+
+\begin{document}
+
+
+\title{\Huge\textbf{
+  02101 Indledende Programmering \\ Hjemmeopgave 3
+}}
+
+\author{\fontfamily{cmr}\selectfont\textsl{
+  \textbf{s194549} 
+  ~
+  \textbf{s204747}
+}}
+
+\date{\fontfamily{cmr}\selectfont{
+  29. oktober, \quad 2021
+}}
+
+\maketitle
+
+\logo{\includegraphics[height=20mm]{DTU.eps}}
+
+
+\fontfamily{cmr}\selectfont
+\color{white}-
+\\[2pt]
+\color{black}
+\section*{Arbejdsfordeling}
+Vi samarbejdede om alle opgaver, men uddelte \\ ansvarsområder til forskellige gruppemedlemmer.
+
+s194549 var ansvarlig for  \\
+s204747 var ansvarlig for 
+
+\pagebreak
+
+\section{Problem 3: Polar Points}
+
+\pagebreak
+\section{Bilag: Java klasser}
+\label{appendix}
+
+\end{document}
 
