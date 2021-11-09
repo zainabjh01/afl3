@@ -1,91 +1,55 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TextAnalysis {
-  String sourceFileName;
-  static int maxNoOfWords;
-  // int count;
+  ArrayList<String> words = new ArrayList<String>();
 
   public TextAnalysis(String sourceFileName, int maxNoOfWords) {
-    this.sourceFileName = sourceFileName;
-    this.maxNoOfWords = maxNoOfWords;
-
-    // this.count = count;
-
+    try {
+      File file = new File(sourceFileName);
+      Scanner reader = new Scanner(file);
+      while (reader.hasNextLine()) {
+        String line = reader.nextLine().toLowerCase();
+        String[] split = line.split("[^a-zA-Z]+");
+        ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(split));
+        // Remove all empty entries from tokens
+        tokens.removeAll(Collections.singleton(""));
+        int nextSize = tokens.size() + this.words.size();
+        if (nextSize > maxNoOfWords) {
+          break;
+        } else {
+          // If below max words, add tokens to total words
+          this.words.addAll(tokens);
+        }
+      }
+      reader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("Invalid file name");
+      e.printStackTrace();
+    }
   }
 
-  public static void main(String[] args) {
-    Scanner fileInput = new Scanner("text17_01.txt");
-    String sourceFileName = fileInput.next();
-    // Her laver vi en instans af klassen,
-    // så vi kan få adgang til ikke-statiske metoder
-    TextAnalysis tt = new TextAnalysis(sourceFileName, maxNoOfWords);
-
-    // Vi kalder vores metode, så vi kan printe svarene
-    // wordCount
-    int count = tt.wordCount();
-    System.out.println("word count = " + count);
-
-    // getNoOfDifferentWord
-    int withoutDup = tt.getNoOfDifferentWords();
-    System.out.println("different words = " + withoutDup);
-
-    // getNoOfRepetitions
-    // int countRep = tt.getNoOfRepetitions();
-    // System.out.println("repetitions = " + countRep);
-
-  }
-
-  // ------------------------------------------------------------------//
-  // Returnerer antallet af ord i filen
   public int wordCount() {
-    int count = 0;
-    try {
-      Scanner fileInput = new Scanner(new File(sourceFileName));
-
-      while (fileInput.hasNext()) {
-
-        // Tag fat i næste ord
-        String nextWord = fileInput.next();
-        count++;
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Uglydig fil");
-    }
-    return count;
+    return this.words.size();
   }
 
-  // ------------------------------------------------------------------//
-  // Returnerer antallet af forskellige ord i filen
+  // A set is not allowed to have duplicates.
+  // Filter by adding to different collection!
   public int getNoOfDifferentWords() {
-    // Vi laver to arrays
-    // Første array er alle ord med gentagelser
-    // Andet array er uden gentagelser
-    List<String> withDup = new ArrayList<>();
-    List<String> withoutDup = new ArrayList<>();
-
-    // På samme måde som wordCount(), laver vi en exception med try/catch
-    // Vi bruger desuden samme metode til at scanne filen
-    try {
-      Scanner fileInput = new Scanner(new File(sourceFileName));
-      // Vi tilføjer alle ord til vores array
-      // og fjerner tegn, der ikke er bogstaver eller mellemrum
-      while (fileInput.hasNext()) {
-        withDup.add(fileInput.next().replaceAll("[^A-Za-z]", ""));
-      }
-
-      withoutDup = withDup.stream().distinct().collect(Collectors.toList());
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return withoutDup.size();
+    Set<String> set = new LinkedHashSet<String>();
+    set.addAll(this.words);
+    return set.size();
   }
 
-  // ------------------------------------------------------------------//
-  // Returnerer antallet af øjeblikkelige gentagelser
-  // public int getNoOfRepetitions() {}
-
+  public int getNoOfRepetitions() {
+    int reps = 0;
+    for (int i = 0; i < this.words.size() - 1; i++) {
+      String next = this.words.get(i + 1);
+      String here = this.words.get(i);
+      if (here.equals(next))
+        reps++;
+    }
+    return reps;
+  }
 }
