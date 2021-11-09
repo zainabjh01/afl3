@@ -1,0 +1,16 @@
+{
+  "java.project.sourcePaths": [
+    "assignment1/classes",
+    "assignment2/classes",
+    "assignment3/classes"
+  ],
+  "latex-workshop.latex.outDir": "%DIR%/output",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true,
+  },
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "on",
+}
