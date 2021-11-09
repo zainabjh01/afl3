@@ -1,0 +1,29 @@
+I problemet designes en klasse \code{MovingPoint} der beskriver et punkt-objekt der kan bevæge sig efter polære koordinater (retning og længde), og desuden kan instantieres arbitrært mange gange.
+
+Da ethvert punk er beskrevet i et 2-dimensionelt vektorrum, defineres også en underklasse \code{Vector}, som gør det muligt at behandle en \code{double[]} array som en matematisk vektor, med tilhørende simple operationer: addition og mulitplikation med skalar. Givet disse operationer er det nemlig muligt at "bevæge" punktet rundt (addition), i en givet \textit{retning} og \textit{hastighed} (skalleret retningsvektor med multiplikation).
+
+Klassen \code{MovingPoint} har altså 3 egenskaber på ethvert tidspunkt, netop en position, retning og hastighed - på klassen givet ved \code{this.position} (\code{Vector}), \code{this.direction} (\code{double}) og \code{this.speed} (\code{double}).
+
+Det bemærkes at der i opgaven er tale om et uendeligt stort vektorrum - altså ingen begrænsning af et punkts position. Til gengæld er egenskaberne begrænset i både retningen (vinklen) [grader\degree] $\theta$, som er angivet i værdierne \(0 \leq \theta < 360\), samt hastigheden som afskæres i intervallet \([0, 20]\).
+
+Fremfor at tage højde for dette alle steder i koden hvor hastighed eller vinkel bliver sat, udstilles istedet 2 instans metoder til at sætte værdierne "sikkert", \code{setDirection} og \code{setSpeed}. Disse metoder indeholder implementeringen til at begrænse værdierne. Hastigheden er simpel, og skal blot skæres af i intervallets grænser, hvis den bliver sat med værdier udenfor intervallet. Da vinklen er cyklisk, skal den ikke blot skæres af i grænserne, men istedet "dreje rundt til næste gyldige vinkel". Denne funktionalitet opnås ved at gøre brug af \code{\%} (modulus) til \code{360}. Dette fjerner dog ikke muligheden for negative værdier, hvorfor man blot kan trække en negativ vinkel fra $360$ når dette er tilfældet:
+
+\begin{algorithm}
+  \begin{algorithmic}
+    \If{$\theta$ < 0}
+      \Return 360 - ($\theta$ \% 360)
+    \Else{}
+      \Return $\theta$ \% 360
+    \EndIf
+  \end{algorithmic}
+\end{algorithm}
+
+Med disse \textit{setter} funktioner er det muligt at ignorere værdiernes begrænsninger i det øvrige logiske flow af koden. Årsagen til denne tilgang fremfor en direkte implementering i eksempelvis \code{accelerateBy()} eller \code{turnBy()} er, at værdierne også bliver sat i \textit{andre} metoder. På den valgte måde kan enhver instansmetode eller constructor, som eksistere i koden nu (eller kommer til det i fremtiden), frit sætte værdierne uden at disse bliver sat udenfor deres angivede begrænsninger.
+
+Dette valg gør at den øvrige implementering var let at overskue, og nærmest bare skulle aflæses fra opgavebeskrivelsen. \code{move} metoden er interessant da den implementere utility funktionerne fra \code{Vector} typen.
+
+I \code{move()} metoden konverteres \code{this.direction} fra grader til radianer (\code{Math.toRadians}), hvorefter en retningsvektor kan udledes af vinklen vha. \code{Math.cos()} og \code{Math.sin()}. Denne retningsvektor skalleres så med hastigheden mulitpliceret over \code{duration}, som altså giver den resulterende ændring i position af bevægelsen. Til sidst kan ændrings-vektoren derfor lægges til \code{this.position}, hvorved altså den endelige resulterende position er fundet.
+
+Bemærk at \code{Vector} klassen både udstiller de matematiske operationer som statiske metoder og som instansmetoder. I denne implementering gøres kun brug af instansmetoderne, men de statiske er stadigvæk udstillet i tilfælde af at koden skal udvides, hvorved det i nogle tilfælde kunne give mere mening at bruge de statiske metoder som har en mere explicit syntax, for at forbedre læsbarheden. Instansmetoderne er afledt af de statiske metoder, hvorfor de stadigvæk er inkluderet i koden.
+
+Se \nameref{appendix}.
