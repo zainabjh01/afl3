@@ -1,0 +1,60 @@
+Da både delopgave a) og b) deler næsten alt kode, så vil der først gøres en overordnet redegørelse for koden der er fælles, og til sidst de specifikke implementeringsvarianter til at løse delopgaverne.
+
+Til løsning af problem 3 gøres i stor udstrækning brug af de objekt-orienterede muligheder som Java stiller til rådighed. Situationen fortolkes således, at der eksistere nogle "vektor-dyr" med en hastighed \(s\) og position, som bliver sat på et \(n \times n\) kvadratisk og kartesisk heltals-gitter.
+
+Dyrenes klasse bliver \code{PredatorPray} klassen i sig selv, og de deler egenskaberne at de har en hastighed, en position, og et gitter tilknyttet til sine instanser. Man kunne argumentere for, at gitteret der er tilknyttet hvert dyr bør være tilknyttet som en reference til et objekt, men da gitterets eneste egenskab er dens kvadratiske dimension \(n\), så tilknyttes den (for simplicitetens skyld) som en reference til den primitive \code{int n}, der bliver givet til \code{runSimulation()} metoden.
+
+I \code{runSimulation()} bliver der altså instantieret 2 dyr, \code{prey} og \code{predator}, med klassen \code{PredatorPray}, hvor begge dyr får tildelt tilfældige positioner på gitteret i klassens constructor metode \code{PredatorPray()}.
+
+Flere steder både i delopgave a) og b) gøres der brug af tilfældige koordinater indenfor gitteret, så der oprettes en statisk klasse tildelt \code{randomCoordinates()} som ikke ved noget om gitteret, men blot finder tilfældige koordinator givet et maksimum og minimum. Funktionen  kan derfor \textit{bl.a.} bruges til ovenstående problemstilling med tilfældige startpositioner af et \code{PredatorPray}, hvis altså gitterets dimensioner gives som \code{min} og \code{max} parametre til den statiske metode.
+
+Da der også arbejdes meget med koordinater og vektorer, udarbejdes der en statisk underklasse \code{Vector}, som gør det muligt at behandle koordinaterne som vektorer, med tilhørende matematiske vektor operationer defineret som statiske- (eller instans; begge udstilles) metoder på \code{Vector} klassen. Det er en fordel af lave sådan en utility klasse selv i denne situation, da det kun er få matematiske operationer der er behov for at løse opgaven, og desuden giver det mulighed for at \code{Vector} typen underliggende arbejder med primitive \code{int} arrays. Mange biblioteker som eksistere til at arbejde med vektorer er tiltænkt mere tunge opgaver, så der arbejdes oftest med \code{double}, og afarter af mere komplicerede collection typer som eks. \code{ArrayList}. Til denne opgave er der ikke behov for disse mere sofistikerede datastrukturer, og det giver en \textit{lille} optimering mht. evalueringstid at der istedet blot arbejdes med simple primitive \code{int[]}. \code{Vector} typen er dog udarbejdet til at virke på \(n\)-ordens vektorer, så det ville være let at udvide den eksisterende kode til at fungere i højere dimensioner.
+
+I simulationen skal dyrene også kunne skiftes til at tage ture. Dette håndteres indternt i \code{runSimulation()} vha. af en \code{while}-løkke. Ideen er at bruge \code{runSimulation()} som et samlingspunkt for de mange andre metoder der er skabt vha. \textit{"procedural decomposition"}. Altså er det en slags implementeringsspecifik kode, og her er løkken valgt at blive betragtet som en del af implementeringen. Indenfor løkken skal dyrene træffe beslutninger baseret på deres positioner, og bevæge sig derefter.
+
+Fælles for begge dyr er nemlig at de kan bevæge sig, og derfor udstiller \code{PredatorPray} en instans metode \code{move()}, der tager en \code{Vector} som parameter, og ligger denne til dyre-instansens eksisterende position \textit{men} indenfor gitteret. \code{Vector} typen udstiller en statisk metode \code{clamp()}, som netop gør det muligt at holde vektorens komposanter indenfor gitteret ved at begrænse dem begge indenfor \code{min} og \code{max}, som er parametrene metoden tager.
+
+\textit{Hvordan} dyrene bevæger sig er dog underordnet, og dette håndteres istedet via statiske metoder som kan implementeres på kryds af tværs af begge dyr efter behov. I opgaven bliver de selvfølgelig implementeret passende, så der opstår den beskrevede "predator-prey" dynamik. Ideen er at implementere meningsfuld \textbf{komposition} af metoderne, \textbf{fremfor nedarvning} og inter-afhængige klasser der beskriver en bestemt type dyr. Et dyr er et dyr, og de kan principielt det samme!
+
+\subsection*{a)}
+
+(Fortsat fra ovenstående afsnit)
+
+... Eksempelvis bevæger \code{prey} sig med samme funktionalitet, som der bruges til at vælge tilfældige startpositioner til dyrene - nemlig \code{randomCoordinates()}. Her gives istedet grænser via \code{prey.speed}, altså dyrets hastighed.
+
+For at udlede hvordan \code{predator} skal bevæge sig, gøres der primært brug af de statiske utility metoder på \code{Vector} typen. Algoritmen er ekstremt simpel, og kan beskrives som følgende: det ultimative mål for \code{predator} er at have samme koordinater som \code{prey}. Derfor findes den vektor som ligger imellem dyrenes positioner. Denne vektor skal begrænses af hastigheden for \code{predator}, eller mere præcist; den kvadrat som angiver grænsen for et område hvor \code{predator} maksimalt må bevæge sig indenfor. Begrænsningen til området kan gøres simpelt vha. \code{clamp()}, som netop begrænser hver komposant inden for en angivet \code{min} og \code{max}.
+
+Generelt viste det sig at der var mange fordele ved at definere en selvstændig \code{Vector} type. Resten af implementeringen handler mest om formatering, og en af de fede ting i Java er, at man kan overskride den \code{toString()} instans metode, som er den der underliggende bliver kaldt, hvis man printer instansen til standard output. Derfor printer \code{Vector} typen sig selv nøjagtigt som beskrevet i opgaven, \code{[x;y]}, fordi \code{toString()} er blevet defineret efter kravene, og kræver derfor ikke en wrapper metode i selve implementering hvor instansen bliver printet.
+
+\subsection*{b)}
+
+På grund af den de-kompositionerede struktur af koden, var det kun et spørgsmål om at sætte metoderne anderledes sammen i implementeringen til b). "Teleport" er egentligt bare det som sker når et dyr bliver instantieret på gitteret, nemlig igen \code{randomCoordinates()}, konkret givet i intervallet \(0 ... n - 1\). Her sættes metoden undner et \code{if} statement, som tjekker om komposanterne fra positionen af \code{prey} er delelig med \(s\). Hvis betingelsen ikke er opfyldt, så bliver programmet helt identisk med a), med undtagelse af kravet \(s \geq 2\). \\[5pt]
+
+Se \nameref{appendix}.
+
+\pagebreak
+
+\subsection*{(bonus)}
+
+For sjovs skyld er der også blevet udformet en lille "vektor-savanne". Denne kan afprøves ved at køre \code{PredatorVisualizer.java}, og desuden ses den på forsiden af dokumentet. Her visualiseres simulationen i terminalen, hvor hvert gitterpunkt renderes med en prik, og dyrene som passende emojis. Selvom eksperimentet blot var for fornøjelsens skyld, så hjalp det faktisk til at løse problemerne mere nøjagtigt, da simulationens opførsel blev øjeblikkeligt tydelig og visuel. \\[20pt]
+
+\subsection*{Bemærkninger}
+
+\code{while}-løkken som styrer dyrenes ture i \code{runSimulation()} brydes bl.a. når \code{t} bliver større end antallet af ture / iterationer som er kørt. I opgaven står der dog:
+\begin{displayquote}
+\large\color{gray}{
+  ... \(t \geq 0\) is the number of \textit{moves} to be performed.
+}
+\end{displayquote}
+
+Så denne implementering holder faktisk styr på antallet af moves hvert dyr tager, selvom det her blot vil betyde at det totale antal \textit{moves} er dobbelt så stort som antallet af ture (da hvert dyr begge tager 1 move hver tur = 2 moves i alt). I den konkrete kode implementering holdes der derfor øje med hvor mange \textit{moves} som \code{predator} har taget, givet ved \code{predator.moves}. Dette er et arbitrært valg, og dette kunne ligeså godt være \code{prey.moves}.
+
+Hver gang et dyr tager et \textit{move} forøges dens instans-variabel \code{int moves} med \code{1}. Dette er givet ved instans metoden \textit{move}, som også er ansvarlig for at ligge nye koordinator til den eksisterende position.
+
+Et mere præcist udtryk for \code{t} havde nok været \textit{turns} eller \textit{rounds}, men igennem test på CodeJudge fandt vi frem til, at det i hvertfald ikke var det faktiske totale antal \textit{moves} som er foretaget der skulle styre slagets gang. \\[1pt]
+
+\subsubsection*{\quad\quad Branchless programming: eksperiment}
+
+\code{Vector} typen har en statisk \code{clamp()} metode, som bruges forskellige steder. Denne er faktisk skrevet med en \textit{brancheless} tilgang, dvs. uden \textit{betingede erklæringer} (if, switch osv.). Dette er sandsynligvis en del \textit{langsommere} end hvis det var blevet implementeret med et if statement. Faktisk kunne metoden være blevet implementeret meget kort og elegant med en ternary operator, som der også er givet et udkommenteret alternativ til i selve koden. Det var et interessant ekseperiment for at undersøge hvordan \code{boolean}'s konverteres til \code{int}'s i Java under en aritmisk operation. Ideen er nemlig at udnytte den numeriske værdi af en boolsk værdi (\code{1 || 0}), og så bruge det som en slags betinget faktor i en sum, som enten inkludere eller ekskludere led baseret på "betingelsen".
+
+I nogle programmeringssprog ville dette måske give en hurtigere evalueringstid, men selv uden dybere kendskab til hvordan Java compiler til maskinkode, er det sikkert at sige, at det er meget \textit{usandsynligt} at compileren genkender dette obskure mønster, og derfor ender det formentligt med noget overhead i og med at typerne skal konverteres frem og tilbage. Ikke desto mindre var det sjovt og lærerigt!
