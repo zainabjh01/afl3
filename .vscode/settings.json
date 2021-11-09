@@ -1,5 +1,7 @@
 {
   "java.project.sourcePaths": [
+    "assignment1/classes",
+    "assignment2/classes",
     "assignment3/classes"
   ],
   "latex-workshop.latex.outDir": "%DIR%/output",
