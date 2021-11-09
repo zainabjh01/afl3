@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.28)  20 OCT 2021 15:35
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.9.28)  9 NOV 2021 11:41
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/mmsie/Videos/java-course-assignments/assignment2/docs/main.tex
-(c:/Users/mmsie/Videos/java-course-assignments/assignment2/docs/main.tex
+**c:/Users/mmsie/Videos/afl3/assignment2/docs/main.tex
+(c:/Users/mmsie/Videos/afl3/assignment2/docs/main.tex
 LaTeX2e <2021-06-01> patch level 1
 L3 programming layer <2021-08-27> (c:/texlive/2021/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/02/12 v1.4n Standard LaTeX document class
@@ -631,13 +631,15 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 59.
 LaTeX Info: Redefining \pageref on input line 59.
 LaTeX Info: Redefining \nameref on input line 59.
- (output/main.out) (output/main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
 LaTeX Info: Redefining \celsius on input line 59.
 Package gensymb Info: Faking symbols for \degree and \celsius on input line 59.
-
 
 Package gensymb Warning: Not defining \perthousand.
 
@@ -696,37 +698,28 @@ LaTeX Font Info:    Font shape `T1/cpr/b/n' will be
 (Font)              scaled to size 18.14404pt on input line 87.
 [1
 
-] (./problem1.tex) (./problem2.tex) (./problem3.tex
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1.
- (c:/texlive/2021/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `lmtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    Font shape `T1/cpr/b/n' will be
-(Font)              scaled to size 10.50003pt on input line 13.
- [2]) [3] (../classes/TextAnalysis.java)
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 108.
- (c:/texlive/2021/texmf-dist/tex/latex/lm/t1lmss.fd
-File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `lmss' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
- (../classes/TrianglePattern.java [4] [5]) (../classes/MovingPoint.java [6] [7]) [8] (output/main.aux)
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6D3A93F59D6475D75CA72099A3552168;604.
- ) 
-Here is how much of TeX's memory you used:
- 25226 strings out of 476493
- 451179 string characters out of 5820669
- 1017694 words of memory out of 5000000
- 45172 multiletter control sequences out of 15000+600000
- 437360 words of font info for 71 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 117i,6n,122p,1256b,1770s stack positions out of 5000i,500n,10000p,200000b,80000s
+]
 
-Output written on output/main.xdv (8 pages, 122856 bytes).
+! LaTeX Error: File `problem3.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+c:/Users/mmsie/Videos/afl3/assignment2/docs/main.tex:97: Emergency stop.
+<read *> 
+         
+l.97 \subfile{problem3}
+                       ^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 24926 strings out of 476493
+ 446773 string characters out of 5820669
+ 782426 words of memory out of 5000000
+ 44912 multiletter control sequences out of 15000+600000
+ 427038 words of font info for 58 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 117i,6n,122p,1237b,648s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on output/main.xdv (1 page, 2308 bytes).
